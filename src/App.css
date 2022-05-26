@@ -68,10 +68,10 @@ form {
 
 input {
 	display: block;
-	width: 100%;
+	width: 80%;
 	margin: 10px;
 	padding: 10px;
-	outline: none;
+	/* outline: #765765; */
 	border-radius: 5px;
 	border: none;
 }

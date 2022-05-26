@@ -1,82 +1,64 @@
-import { useState } from 'react';
-import './App.css';
+import React, { useState, useEffect } from 'react';
+// import './App.css';
+
+import axios from 'axios';
+
 
 function App() {
+  const [counter, setCounter] = useState(0);
 
-  // const [counter, setCounter] = useState(0);
+  const [developer, setDeveloper] = useState({ name: "", experience: 5, language: "Javascript" });
 
-  // const countCounter = () => {
-  //   setCounter(prev => prev + 1);
-  // };
+  const [user, setUser] = useState({});
+  const [username, setUsername] = useState();
 
-  // const resetCounter = () => {
-  //   if (window.confirm("are you sure you want to reset the counter")) {
-  //     setCounter(0);
-  //   }
-  // };
+  useEffect(() => {
+    getUser();
+  }, [username]);
 
-  // single post
-  const [post, setPost] = useState({
-    title: '',
-    content: '',
-  });
 
-  //all posts
+  const getUser = async () => {
+    const users = await axios.get(`https://jsonplaceholder.typicode.com/photos/1`);
 
-  const [posts, setPosts] = useState([]);
-
-  const submitForm = (e) => {
-
-    e.preventDefault();
-    setPosts([{ title: post.title, content: post.content }, ...posts]);
-    setPost({ title: "", content: "", });
+    console.log(users);
+    setUser(users.data);
   };
 
 
+  const submitForm = (event) => {
+    event.preventDefault();
+
+    console.log(developer.name);
+    setUsername(developer.name);
+
+  };
+
   return (
-    <div className="App">
-      <div className="container">
-        {/* <h1>Counter Application</h1>
-        <h2>{counter}</h2>
-        <button type="button" className="btn btn-primary"
-          onClick={countCounter}
-        >
-          Add
-        </button>
-        <button type="button" className="btn btn-secondary"
-          onClick={resetCounter}
-        >
-          Reset
-        </button> */}
+    <>
+      <h1>Total = {counter}</h1>
 
-        <form onSubmit={submitForm}>
-          <h1>Add Posts</h1>
-          <input type="text" placeholder="post title"
-            onChange={(e) => setPost({ ...post, title: e.target.value })}
-            value={post.title}
-          />
-          <input type="text" placeholder="post content"
-            onChange={(e) => setPost({ ...post, content: e.target.value })}
-            value={post.content}
-          />
-          <button type="sumbit" className="btn btn-primary"
-          >
-            Add
-        </button>
-        </form>
+      <form onSubmit={submitForm}>
+        <input type="text" placeholder="enter username"
+          onChange={(e) => setDeveloper({ ...developer, name: e.target.value })}></input>
 
-        {posts.length > 0 &&
-          posts.map(post => (
-            <div className="card">
-              <h4>{post.title}</h4>
-              <p>{post.content}</p>
-            </div>
-          ))
-        }
+        <button type="submit">Search</button>
+      </form>
 
-      </div>
-    </div >
+      {/* name : {developer.name}<br />
+        I have : {developer.experience} Years of experience<br />
+      My Favorite Language is {developer.language} <br /> */}
+
+      {/* <button onClick={changeInfo}>Count</button> */}
+
+      {/* <pre>{JSON.stringify(user)}</pre> */}
+
+      <img src={user.thumbnailUrl} alt="" />
+      <h2>{user.name}</h2>
+
+    </>
+
   );
+
 }
 
 export default App;
